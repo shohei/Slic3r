@@ -222,6 +222,18 @@ offset_ex(const Slic3r::Polygons &polygons, const float delta,
     return expp;
 }
 
+Slic3r::ExPolygons
+offset_ex(const Slic3r::ExPolygons &expolygons, const float delta,
+    double scale, ClipperLib::JoinType joinType, double miterLimit)
+{
+    Slic3r::Polygons pp;
+    for (Slic3r::ExPolygons::const_iterator ex = expolygons.begin(); ex != expolygons.end(); ++ex) {
+        Slic3r::Polygons pp2 = *ex;
+        pp.insert(pp.end(), pp2.begin(), pp2.end());
+    }
+    return offset_ex(pp, delta, scale, joinType, miterLimit);
+}
+
 void
 offset2(const Slic3r::Polygons &polygons, ClipperLib::Paths* retval, const float delta1,
     const float delta2, const double scale, const ClipperLib::JoinType joinType, const double miterLimit)
@@ -474,6 +486,17 @@ void diff(const SubjectType &subject, const Slic3r::ExPolygons &clip, ResultType
 }
 template void diff<Slic3r::Polygons, Slic3r::ExPolygons>(const Slic3r::Polygons &subject, const Slic3r::ExPolygons &clip, Slic3r::ExPolygons* retval, bool safety_offset_);
 
+template <class ResultType>
+void diff(const Slic3r::ExPolygons &subject, const Slic3r::ExPolygons &clip, ResultType* retval, bool safety_offset_)
+{
+    Slic3r::Polygons pp;
+    for (Slic3r::ExPolygons::const_iterator ex = subject.begin(); ex != subject.end(); ++ex) {
+        Slic3r::Polygons ppp = *ex;
+        pp.insert(pp.end(), ppp.begin(), ppp.end());
+    }
+    diff(pp, clip, retval, safety_offset_);
+}
+
 Slic3r::Polygons
 diff(const Slic3r::Polygons &subject, const Slic3r::Polygons &clip, bool safety_offset_)
 {
@@ -492,6 +515,7 @@ diff_ex(const SubjectType &subject, const ClipType &clip, bool safety_offset_)
 }
 template Slic3r::ExPolygons diff_ex<Slic3r::Polygons, Slic3r::Polygons>(const Slic3r::Polygons &subject, const Slic3r::Polygons &clip, bool safety_offset_);
 template Slic3r::ExPolygons diff_ex<Slic3r::Polygons, Slic3r::ExPolygons>(const Slic3r::Polygons &subject, const Slic3r::ExPolygons &clip, bool safety_offset_);
+template Slic3r::ExPolygons diff_ex<Slic3r::ExPolygons, Slic3r::ExPolygons>(const Slic3r::ExPolygons &subject, const Slic3r::ExPolygons &clip, bool safety_offset_);
 
 template <class SubjectType, class ResultType>
 void intersection(const SubjectType &subject, const Slic3r::Polygons &clip, ResultType* retval, bool safety_offset_)
@@ -582,6 +606,23 @@ void union_(const Slic3r::Polygons &subject1, const Slic3r::Polygons &subject2, 
     Polygons pp = subject1;
     pp.insert(pp.end(), subject2.begin(), subject2.end());
     union_(pp, retval, safety_offset);
+}
+
+Slic3r::Polygons
+union_(const Slic3r::ExPolygons &subject1, const Slic3r::ExPolygons &subject2, bool safety_offset)
+{
+    Polygons pp;
+    for (Slic3r::ExPolygons::const_iterator it = subject1.begin(); it != subject1.end(); ++it) {
+        Polygons spp = *it;
+        pp.insert(pp.end(), spp.begin(), spp.end());
+    }
+    for (Slic3r::ExPolygons::const_iterator it = subject2.begin(); it != subject2.end(); ++it) {
+        Polygons spp = *it;
+        pp.insert(pp.end(), spp.begin(), spp.end());
+    }
+    Polygons retval;
+    union_(pp, &retval, safety_offset);
+    return retval;
 }
 
 void union_pt(const Slic3r::Polygons &subject, ClipperLib::PolyTree* retval, bool safety_offset_)

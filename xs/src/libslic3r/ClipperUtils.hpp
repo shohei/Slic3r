@@ -61,6 +61,9 @@ void offset(const Slic3r::Polygons &polygons, Slic3r::ExPolygons* retval, const 
 Slic3r::ExPolygons offset_ex(const Slic3r::Polygons &polygons, const float delta,
     double scale = 100000, ClipperLib::JoinType joinType = ClipperLib::jtMiter, 
     double miterLimit = 3);
+Slic3r::ExPolygons offset_ex(const Slic3r::ExPolygons &expolygons, const float delta,
+    double scale = 100000, ClipperLib::JoinType joinType = ClipperLib::jtMiter, 
+    double miterLimit = 3);
 
 void offset2(const Slic3r::Polygons &polygons, ClipperLib::Paths* retval, const float delta1,
     const float delta2, double scale = 100000, ClipperLib::JoinType joinType = ClipperLib::jtMiter, 
@@ -126,6 +129,7 @@ Slic3r::ExPolygons union_ex(const Slic3r::Polygons &subject, bool safety_offset 
 Slic3r::ExPolygons union_ex(const Slic3r::Surfaces &subject, bool safety_offset = false);
 
 void union_(const Slic3r::Polygons &subject1, const Slic3r::Polygons &subject2, Slic3r::Polygons* retval, bool safety_offset = false);
+Slic3r::Polygons union_(const Slic3r::ExPolygons &subject1, const Slic3r::ExPolygons &subject2, bool safety_offset = false);
 
 void union_pt(const Slic3r::Polygons &subject, ClipperLib::PolyTree* retval, bool safety_offset_ = false);
 void union_pt_chained(const Slic3r::Polygons &subject, Slic3r::Polygons* retval, bool safety_offset_ = false);
