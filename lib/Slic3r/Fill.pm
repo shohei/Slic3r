@@ -28,6 +28,7 @@ our %FillTypes = (
     line                => 'Slic3r::Fill::Line',
     concentric          => 'Slic3r::Fill::Concentric',
     honeycomb           => 'Slic3r::Fill::Honeycomb',
+    gyroid              => 'Slic3r::Fill::Gyroid',
     '3dhoneycomb'       => 'Slic3r::Fill::3DHoneycomb',
 );
 

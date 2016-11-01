@@ -32,7 +32,7 @@ sub support_layers {
     return [ map $self->get_support_layer($_), 0..($self->support_layer_count - 1) ];
 }
 
-# this should be idempotent
+# this should be idempotent //冪等性
 sub slice {
     my $self = shift;
     
@@ -1068,7 +1068,7 @@ sub combine_infill {
                      + $layerms[-1]->flow(FLOW_ROLE_PERIMETER)->scaled_width / 2
                      # Because fill areas for rectilinear and honeycomb are grown 
                      # later to overlap perimeters, we need to counteract that too.
-                     + (($type == S_TYPE_INTERNALSOLID || $region->config->fill_pattern =~ /(rectilinear|grid|line|honeycomb)/)
+                     + (($type == S_TYPE_INTERNALSOLID || $region->config->fill_pattern =~ /(rectilinear|grid|line|honeycomb|gyroid)/)
                        ? $layerms[-1]->flow(FLOW_ROLE_SOLID_INFILL)->scaled_width
                        : 0)
                      )}, @$intersection;

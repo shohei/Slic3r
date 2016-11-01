@@ -371,6 +371,7 @@ PrintConfigDef::PrintConfigDef()
     def->enum_values.push_back("hilbertcurve");
     def->enum_values.push_back("archimedeanchords");
     def->enum_values.push_back("octagramspiral");
+    def->enum_values.push_back("gyroid");
     def->enum_labels.push_back("Rectilinear");
     def->enum_labels.push_back("Grid");
     def->enum_labels.push_back("Line");
@@ -380,6 +381,7 @@ PrintConfigDef::PrintConfigDef()
     def->enum_labels.push_back("Hilbert Curve");
     def->enum_labels.push_back("Archimedean Chords");
     def->enum_labels.push_back("Octagram Spiral");
+    def->enum_labels.push_back("Gyroid");
     def->default_value = new ConfigOptionEnum<InfillPattern>(ipHoneycomb);
 
     def = this->add("first_layer_acceleration", coFloat);
